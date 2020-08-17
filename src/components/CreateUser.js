@@ -54,7 +54,8 @@ export default ({ open, toggleModal }) => {
   const [loading, setLoading] = React.useState(false)
   const createuser = async () => {
     const { email, password } = state
-    if (!loading && email && password) {
+    const readyForSubmission = (permissions.includes(permissionLevels.superAdmin) && !password ) ? false : true
+    if (!loading && email && password && readyForSubmission) {
       try {
         setLoading(true)
         const token = await firebase.auth().currentUser.getIdToken(true)
@@ -89,6 +90,7 @@ export default ({ open, toggleModal }) => {
     setState(s => ({ ...s, [name]: [value] }))
   }
   const { email, password, displayName, phoneNumber, permissions } = state
+  const readyForSubmission = (permissions.includes(permissionLevels.superAdmin) && !password ) ? false : true
   const classes = useStyles()
   return (
     <div>
@@ -178,7 +180,7 @@ export default ({ open, toggleModal }) => {
           <Button
             variant='contained'
             color='primary'
-            disabled={loading || !email || !password}
+            disabled={loading || !email || !password || !readyForSubmission }
             onClick={createuser}
             >
             Create User
