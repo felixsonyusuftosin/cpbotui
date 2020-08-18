@@ -61,6 +61,8 @@ export default () => {
   } = selectedUser
   const { creationTime, lastSignInTime } = metadata
   const { permissions = [], token } = customClaims
+  const newCustomClaims = { ...customClaims}
+  delete newCustomClaims.permissions
   const data = {
     uid,
     displayName,
@@ -70,7 +72,8 @@ export default () => {
     creationTime,
     lastSignInTime,
     token,
-    permissions: Array.isArray(permissions) ? permissions.join(', ') : permissions
+    permissions: Array.isArray(permissions) ? permissions.join(', ') : permissions,
+    ...newCustomClaims
   }
   const history = useHistory()
   const [loading, setLoading] = React.useState(false)
@@ -128,7 +131,7 @@ export default () => {
       setLoading(true)
       const token = await firebase.auth().currentUser.getIdToken(true)
       const config = {
-        data: { email: data.email, token: data.token },
+        data: { email: data.email, token: 'password' },
         method: 'post',
         headers: {
           authorization: `Bearer ${token}`
