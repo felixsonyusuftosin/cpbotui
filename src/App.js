@@ -1,30 +1,33 @@
 import React from 'react'
-import Paperbase from './components/Paperbase'
-import Content from './components/Content'
-import Login from './components/Login'
-import DetailView from './components/DetailView'
-import Listusers from './components/Listusers'
 import firebase from 'firebase'
 import 'firebase/auth'
-import { SelectedUderProvider } from './context/UserContext'
+import { SelectedUserProvider } from './context/UserContext'
+import Main from './newComponent/main'
+import Content from './newComponent/content'
 
 import './App.css'
 import {
   BrowserRouter as Router,
-  Switch,
   Route,
-  Link,
   Redirect
 } from 'react-router-dom'
+import config from './utils/config'
+import { AppLoader } from './components/newComponent/components/common'
 
+firebase.initializeApp(config)
 function App() {
   const [user, setUser] = React.useState(null)
+  const [appIsReady, setAppIsReady] = React.useState(false)
+
   React.useEffect(() => {
-    firebase.auth().onAuthStateChanged(user => {
-      if (user) {
-        setUser(user)
-      }
-    })
+    if (!user) {
+      firebase.auth().onAuthStateChanged(userinfo => {
+        setAppIsReady(true)
+        if (userinfo) {
+          setUser(userinfo)
+        }
+      })
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user])
 
@@ -36,43 +39,34 @@ function App() {
           user ? (
             children
           ) : (
-              <Redirect
-                to={{
-                  pathname: '/',
-                  state: { from: location }
-                }}
-              />
-            )
+            <Redirect
+              to={{
+                pathname: '/',
+                state: { from: location }
+              }}
+            />
+          )
         }
       />
     )
   }
 
   return (
-    <SelectedUderProvider>
-      <div className='App'>
+    <SelectedUserProvider>
+      {!appIsReady ? (
+        <AppLoader />
+      ) : (
         <Router>
-          <Paperbase>
-            <Content>
-              <Switch>
-                <Route exact path='/'>
-                  <Login />
-                </Route>
-                <PrivateRoute exact path='/users'>
-                  <Listusers />
-                </PrivateRoute>
-                <PrivateRoute exact path='/detail'>
-                  <DetailView />
-                </PrivateRoute>
-                <Route exact path='**'>
-                  <Login />
-                </Route>
-              </Switch>
-            </Content>
-          </Paperbase>
+          <Route exact path='/'>
+            <Main />
+          </Route>
+          <PrivateRoute exact path='/admin**'>
+            <Content />
+          </PrivateRoute>
         </Router>
-      </div>
-    </SelectedUderProvider>
+      )}
+    </SelectedUserProvider>
+
   )
 }
 

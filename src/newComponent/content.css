@@ -1,0 +1,122 @@
+@import url('./main.css');
+
+.container { 
+  width: 100%;
+  height: 100%;
+  display: flex;
+  box-sizing: border-box;
+}
+
+.nav { 
+  height: 100%;
+  width: 15%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.nav-footer {
+  height: 60px;
+  background: rgba(0,0,0,0.2);
+  display: flex;
+  padding: 0px 30px;
+  box-sizing: border-box;
+  align-items: center;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.5);
+  font-size: 1.3rem;
+  letter-spacing: 1px;
+  cursor: pointer;
+}
+.nav-link {
+  width: 100%;
+  padding: 15px 30px;
+  font-family: 'roboto';
+  font-size: 1.2rem;
+  cursor: pointer;
+  color: rgba(255,255,255,0.8);
+  font-weight: 500;
+  display: flex;
+}
+.nav-link span { 
+  margin-left: 10px;
+}
+.selected-nav { 
+  background: rgba(0,0,0,0.3);
+}
+.nav-link:hover{ 
+  color: #fff;
+}
+.nav-body { 
+  width: 100%;
+  height: calc(100% - 140px);
+  padding: 30px 0px;
+}
+.nav-footer:hover { 
+  color: #fff;
+}
+
+.nav .entity { 
+  height: 80px;
+  border-bottom: solid 1px rgba(255,255,255, 0.2);
+  padding: 10px 20px;
+  box-sizing: border-box;
+  font-size: 1.2rem;
+  color: rgba(255,255,255, 0.6);
+  display:flex;
+  justify-content: flex-end;
+  align-items:flex-end;
+  
+}
+
+.icon-button { 
+  padding: 0px 8px;
+  font-size: 2rem;
+  height: 2.5rem;
+  line-height: 2.5rem;
+  background-color: white;
+  text-transform:uppercase;
+  margin-right: 10px;
+}
+
+.content-main { 
+  height: 100%;
+  overflow: auto;
+  width: 85%;
+  display: flex;
+  flex-direction: column;
+}
+
+
+.content-body { 
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 30px; 
+  box-sizing: border-box;
+}
+
+.item-list {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: rgba(255,255,255, 0.8);
+  border-radius:5px;
+  -webkit-border-radius:5px;
+  -moz-border-radius:5px;
+  -ms-border-radius:5px;
+  -o-border-radius:5px;
+  -webkit-border-radius:5px;
+}
+
+.content-footer {
+  bottom:0px;
+  width: 85%;
+  right: 0px;
+  position: fixed;
+  height: 80px;
+  background: rgba(255,255,255, 1);
+  display: flex;
+  justify-content: center;
+  align-items:center;
+}

@@ -13,7 +13,7 @@ const useSelectedUser = () => {
   }
   return context
 }
-export const SelectedUderProvider = props => {
+export const SelectedUserProvider = props => {
   const [ selectedUser, setSelecteduser] = useState(null)
 
   const selectUser = React.useCallback((user => {
