@@ -16,7 +16,7 @@ export default () => {
   return (
     <div className='nav dark-b'>
       <div className='entity'>
-        <div className='icon-button dark roboto initials el'>{initials}</div>
+        <div className='icon-button dark roboto initials'>{initials}</div>
         <span>{user.email}</span>
       </div>
       <div className='nav-body el'>
