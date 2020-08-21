@@ -66,33 +66,33 @@ export default () => {
         <div className='search-table'>
           <WildSearch width='100%' />
         </div>
-        <div className='table-pagination'>
-          <span> Showing 1-10 0f 100</span>
-          <show> 50 Results</show>
-          <span className='btt'>Previous</span>
-          <span className='btt'>Next</span>
+        <div className='table-pagination el'>
+          <span className='el'> Showing 1-10 0f 100</span>
+          <show className='el'> 50 Results</show>
+          <span className='btt el'>Previous</span>
+          <span className='btt rl'>Next</span>
         </div>
       </div>
       <div className='table'>
         <div className='table-row hea'>
-          <div> Email</div>
-          <div> Token</div>
-          <div> Permissions </div>
+          <div className='el'> Email</div>
+          <div className='el'> Token</div>
+          <div className='el'> Permissions </div>
           <div> </div>
         </div>
         {userList &&
           userList.map(userItem => {
             const { email, permissions, uid, token } = formatData(userItem)
             return (
-              <Link  key={uid} style={{color: 'inherit'}} className='no-style' to={`/admin/user/${uid}`}>
+              <Link  key={uid} style={{color: 'inherit'}} className='no-style el' to={`/admin/user/${uid}`}>
                 <div className='table-row'>
-                  <div>{email}</div>
-                  <div>{token}</div>
+                  <div className='el'>{email}</div>
+                  <div className='el'> {token}</div>
                   <div>
                     {permissions.map(
                       perm =>
                         perm && (
-                          <span key={perm} className='permissions'>
+                          <span key={perm} className='permissions el'>
                             {perm}
                           </span>
                         )

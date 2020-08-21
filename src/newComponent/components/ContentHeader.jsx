@@ -14,11 +14,11 @@ export default () => {
       <h1 className='component-head dark semi-thin'>{header}</h1>
       <div className='far-right'>
         <Link className='no-style' to='/admin/addusers' style={{color: 'inherit'}} >
-        <button className='button-head'>
+        <button className='button-head el'>
           Add User
         </button>
         </Link>
-        <button className='button-head outline'>
+        <button className='button-head outline el'>
           Upload Version
           </button>
       </div>

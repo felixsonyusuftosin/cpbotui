@@ -22,7 +22,7 @@ export const Button = ({
   <button
     {...rest}
     onClick={e => !loading && onClick(e)}
-    className={outline ? 'button-head outline' : 'button-head'}>
+    className={outline ? 'button-head outline el' : 'button-head el' }>
     {' '}
     {loading ? (
       <CircularProgress color='secondary' />
@@ -36,9 +36,9 @@ export const NavItemLink = ({ Icon, name, selected, ...rest }) => (
   <NavLink
     to={rest.path}
     activeClassName='selected-nav'
-    className='nav-link  no-style'>
+    className='nav-link  no-style el'>
     <Icon />
-    <span>{name}</span>
+    <span className='el'>{name}</span>
   </NavLink>
 )
 

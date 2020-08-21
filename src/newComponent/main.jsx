@@ -60,18 +60,18 @@ export default () => {
           </h1>
         </div>
         <div className='box'>
-          <p className='semi-light-f semi-thin roboto p'>
+          <p className='semi-light-f semi-thin roboto p el'>
             Manage users on the copbot application using this admin app
           </p>
         </div>
         <div className='box'></div>
       </div>
       <div className='right light-b'>
-        <h1 className='dark roboto'>Sign in to your Account</h1>
+        <h1 className='dark roboto el'>Sign in to your Account</h1>
         <form onSubmit={onSubmit}>
           <Input name='email' label='email' type='email' required />
           <Input name='password' password='password' label='password' type='password' required />
-          <Submit className={loading ? 'dark-b loading' : 'dark-b'}>
+          <Submit className={loading ? 'dark-b loading el' : 'dark-b el'}>
             {' '}
             {loading ? (
               <CircularProgress color='secondary' />
