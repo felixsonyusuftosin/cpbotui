@@ -55,7 +55,7 @@ export default () => {
         setUserList(() => data.data)
         setLoading(false)
       } catch (err) {
-        setError(err)
+        setError(err.message)
         setLoading(false)
       }
     }
@@ -121,7 +121,7 @@ export default () => {
       setSuccess('User has Being Deleted')
       history.push('/admin/users')
     } catch (err) {
-      setError(err)
+      setError(err.message)
       setDeleteLoading()
     }
   }
@@ -154,7 +154,7 @@ export default () => {
       }
       history.push('/admin/users')
     } catch (err) {
-      setError(err)
+      setError(err.message)
       setAccessLoading()
     }
   }
@@ -177,7 +177,7 @@ export default () => {
       setActivationLoading()
       setSuccess('Email sent successfully')
     } catch (err) {
-      setError(err)
+      setError(err.message)
       setActivationLoading()
     }
   }

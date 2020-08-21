@@ -57,7 +57,7 @@ export default () => {
         setSuccess(' User has being created ')
         history.push('/admin/users')
       } catch (err) {
-        setError(err)
+        setError(err.message)
         setLoading(false)
       }
     }
