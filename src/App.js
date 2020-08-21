@@ -12,7 +12,7 @@ import {
   Redirect
 } from 'react-router-dom'
 import config from './utils/config'
-import { AppLoader } from './components/newComponent/components/common'
+import { AppLoader } from './newComponent/components/common'
 
 firebase.initializeApp(config)
 function App() {
