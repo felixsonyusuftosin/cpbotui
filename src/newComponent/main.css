@@ -218,3 +218,9 @@ html, body , #root{
   opacity: 0.3;
 }
 
+span, div, p, button{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+

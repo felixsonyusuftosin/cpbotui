@@ -36,6 +36,9 @@
 input:focus{
   outline: none;
 }
+.initials { 
+  text-transform: capitalize;
+}
 
 .wildsearch input{ 
   font-size: 20px;

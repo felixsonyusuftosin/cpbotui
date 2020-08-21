@@ -7,6 +7,7 @@ import 'firebase/auth'
 export default () => {
   const [loading, setLoading] = React.useState(false)
   const user = firebase.auth().currentUser || {}
+  const initials = user?.email?.substring(0,2)
   const logout = async () => {
     setLoading(true)
     await firebase.auth().signOut()
@@ -15,7 +16,7 @@ export default () => {
   return (
     <div className='nav dark-b'>
       <div className='entity'>
-        <div className='icon-button dark roboto'>FT</div>
+  <div className='icon-button dark roboto initials'>{initials}</div>
         <span>{user.email}</span>
       </div>
       <div className='nav-body'>
