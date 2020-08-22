@@ -6,6 +6,8 @@ import axios from 'axios'
 import { Message } from '../common'
 import { Link } from 'react-router-dom'
 import './components.css'
+import Menu from '@material-ui/core/Menu'
+import MenuItem from '@material-ui/core/MenuItem'
 
 const listusersUrl = `${process.env.REACT_APP_AUTH_SERVER}/listusers`
 
@@ -14,6 +16,26 @@ export default () => {
   const [userList, setUserList] = React.useState(null)
   const [error, setError] = React.useState('')
   const [user, setUser] = React.useState(null)
+  const [anchorEl, setAnchorEl] = React.useState(null)
+  const pageLength = [2, 10, 20, 50, 100]
+  const [next, setNext] = React.useState(null)
+  const [pagination, setPagination] = React.useState({
+    next: null,
+    total: 50
+  })
+
+  const handleClick = event => {
+    setAnchorEl(event.currentTarget)
+  }
+
+  const handleClose = () => {
+    setAnchorEl(null)
+  }
+
+  const handleSelect = total => {
+    setPagination(p => ({ ...p, total, next: null }))
+    handleClose()
+  }
 
   useEffect(() => {
     if (!user) {
@@ -32,8 +54,13 @@ export default () => {
             authorization: `Bearer ${token}`
           }
         }
-        const { data } = await axios.get(listusersUrl, config)
+        const { next, total } = pagination
+        const url = next
+          ? `${listusersUrl}?next=${next}&total=${total}`
+          : `${listusersUrl}?total=${total}`
+        const { data } = await axios.get(url, config)
         setUserList(() => data.data)
+        setNext(data.next)
         setLoading(false)
       } catch (err) {
         setError(err.message)
@@ -44,7 +71,12 @@ export default () => {
     if (user) {
       fetchUserList()
     }
-  }, [user])
+  }, [pagination, user])
+  const goToNext = () => {
+    if (next) {
+      setPagination(p => ({ ...p, next }))
+    }
+  }
 
   const formatData = row => {
     const { customClaims, email, uid } = row
@@ -67,10 +99,28 @@ export default () => {
           <WildSearch width='100%' />
         </div>
         <div className='table-pagination el'>
-          <span className='el'> Showing 1-10 0f 100</span>
-          <show className='el'> 50 Results</show>
-          <span className='btt el'>Previous</span>
-          <span className='btt rl'>Next</span>
+          <span className='el'> {next &&  'More Available'}</span>
+          <span onClick={handleClick} className='el elll'>
+            {' '}
+            {pagination.total} Results
+          </span>
+          <Menu
+            id='simple-menu'
+            anchorEl={anchorEl}
+            keepMounted
+            open={Boolean(anchorEl)}
+            onClose={handleClose}>
+            {pageLength.map(p => (
+              <MenuItem
+                key={p}
+                onClick={() => handleSelect(p)}>{`${p} Items`}</MenuItem>
+            ))}
+          </Menu>
+          <span
+            onClick={goToNext}
+            className={next ? 'btt rl ' : 'btt rl  disabled'}>
+            Next
+          </span>
         </div>
       </div>
       <div className='table'>
@@ -84,7 +134,11 @@ export default () => {
           userList.map(userItem => {
             const { email, permissions, uid, token } = formatData(userItem)
             return (
-              <Link  key={uid} style={{color: 'inherit'}} className='no-style el' to={`/admin/user/${uid}`}>
+              <Link
+                key={uid}
+                style={{ color: 'inherit' }}
+                className='no-style el'
+                to={`/admin/user/${uid}`}>
                 <div className='table-row'>
                   <div className='el'>{email}</div>
                   <div className='el'> {token}</div>
