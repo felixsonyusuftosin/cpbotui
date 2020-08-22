@@ -12,6 +12,7 @@ const deleteUserUrl = `${process.env.REACT_APP_AUTH_SERVER}/deleteuser`
 const revokeAccessUrl = `${process.env.REACT_APP_AUTH_SERVER}/revokeaccess`
 const replaceAccessUrl = `${process.env.REACT_APP_AUTH_SERVER}/replaceaccess`
 const sendActivationUrl = `${process.env.REACT_APP_AUTH_SERVER}/sendactivation`
+const getuserUrl = `${process.env.REACT_APP_AUTH_SERVER}/getuser`
 
 export default () => {
   const [loading, setLoading] = React.useState(false)
@@ -20,14 +21,12 @@ export default () => {
     activationLoading: false,
     accessLoading: false
   })
-  const [userList, setUserList] = React.useState(null)
   const [error, setError] = React.useState('')
+  const [userDetail, setUserDetail ] = React.useState(null)
   const [success, setSuccess] = React.useState('')
   const [user, setUser] = React.useState(null)
   const [suser, setsuser] = React.useState(null)
-  const listusersUrl = `${process.env.REACT_APP_AUTH_SERVER}/listusers`
   const { uid: paramUid } = useParams()
-
   const history = useHistory()
 
   if (!paramUid) {
@@ -42,7 +41,7 @@ export default () => {
   }, [user])
 
   useEffect(() => {
-    const fetchUserList = async () => {
+    const fetchUser = async () => {
       try {
         setLoading(true)
         const token = await firebase.auth().currentUser.getIdToken(true)
@@ -51,8 +50,9 @@ export default () => {
             authorization: `Bearer ${token}`
           }
         }
-        const { data } = await axios.get(listusersUrl, config)
-        setUserList(() => data.data)
+        const { data } = await axios.get(`${getuserUrl}?uid=${paramUid}`, config)
+        console.log(data, '===> data')
+        setUserDetail(() => data)
         setLoading(false)
       } catch (err) {
         setError(err.message)
@@ -61,13 +61,13 @@ export default () => {
     }
 
     if (user) {
-      fetchUserList()
+      fetchUser()
     }
-  }, [listusersUrl, user])
+  }, [paramUid, user])
 
   useEffect(() => {
     const fetchUser = () => {
-      const selectedUser = userList.find(u => u.uid === paramUid) || {}
+      const selectedUser = userDetail
       const {
         uid,
         displayName,
@@ -98,10 +98,10 @@ export default () => {
       }
       setsuser(data)
     }
-    if (user && paramUid && userList && userList.length) {
+    if (user && paramUid && userDetail){
       fetchUser()
     }
-  }, [user, paramUid, userList])
+  }, [user, paramUid, userDetail])
 
   const deleteuser = async () => {
     const setDeleteLoading = () => {
@@ -220,7 +220,7 @@ export default () => {
             })}
             <div className='action-rows'>
               <Button onClick={sendActionMail} label='Send Activation Email' loading={activationLoading} />
-              {!suser.permissions.includes('SUPERADMIN') && (
+              {!suser?.permissions?.includes('SUPERADMIN') && (
                 <Button
                   onClick={deleteuser}
                   label='Delete User'
