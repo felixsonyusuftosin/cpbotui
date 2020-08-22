@@ -51,7 +51,6 @@ export default () => {
           }
         }
         const { data } = await axios.get(`${getuserUrl}?uid=${paramUid}`, config)
-        console.log(data, '===> data')
         setUserDetail(() => data)
         setLoading(false)
       } catch (err) {
