@@ -81,6 +81,7 @@ export default () => {
       const { permissions = [], token } = customClaims
       const newCustomClaims = { ...customClaims }
       delete newCustomClaims.permissions
+      newCustomClaims.token = token
       const data = {
         uid,
         displayName,
