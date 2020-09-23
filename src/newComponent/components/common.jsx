@@ -5,6 +5,7 @@ import Loader from 'react-loader-spinner'
 import './components.css'
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css'
 import CircularProgress from '@material-ui/core/CircularProgress'
+import CloseIcon from '@material-ui/icons/Close'
 
 export const AppLoader = () => (
   <div className='loader-component'>
@@ -22,7 +23,7 @@ export const Button = ({
   <button
     {...rest}
     onClick={e => !loading && onClick(e)}
-    className={outline ? 'button-head outline el' : 'button-head el' }>
+    className={outline ? 'button-head outline el' : 'button-head el'}>
     {' '}
     {loading ? (
       <CircularProgress color='secondary' />
@@ -42,13 +43,28 @@ export const NavItemLink = ({ Icon, name, selected, ...rest }) => (
   </NavLink>
 )
 
-export const WildSearch = ({ ...props }) => (
-  <div
-    className='wildsearch'
-    style={{ width: props.width ? props.width : '30%' }}>
-    <input type='text' {...props} placeholder='search' />
-    <div className='icon-search'>
-      <SearchIcon style={{ fontSize: '1.5rem', color: '#ccc' }} />
+export const WildSearch = ({ loading,value, onChange, ...props }) => {
+
+  return (
+    <div
+      className='wildsearch'
+      style={{ width: props.width ? props.width : '30%' }}>
+      <input
+        type='text'
+        {...props}
+        placeholder='search'
+      />
+      <div className='icon-search'>
+        {!value && !loading && (
+          <SearchIcon style={{ fontSize: '1.5rem', color: '#ccc' }} />
+        )}
+        {value && !loading && (
+          <CloseIcon style={{ fontSize: '1.5rem', color: '#ccc' }} />
+        )}
+        {loading && (
+          <CircularProgress style={{ fontSize: '1.5rem' }} color='secondary' />
+        )}
+      </div>
     </div>
-  </div>
-)
+  )
+}

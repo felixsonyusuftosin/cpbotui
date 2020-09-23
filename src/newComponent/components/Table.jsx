@@ -10,9 +10,12 @@ import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
 
 const listusersUrl = `${process.env.REACT_APP_AUTH_SERVER}/listusers`
+const filterUsersUrl = `${process.env.REACT_APP_AUTH_SERVER}/filterusers`
 
 export default () => {
   const [loading, setLoading] = React.useState(false)
+  const [filterLoading, setFilterLoading] = React.useState(false)
+  const [filter, setFilter] = React.useState('')
   const [userList, setUserList] = React.useState(null)
   const [error, setError] = React.useState('')
   const [user, setUser] = React.useState(null)
@@ -37,6 +40,32 @@ export default () => {
     handleClose()
   }
 
+  const handleChange = async e => {
+    const { value } = e.target
+    setFilter(value)
+    if (!value.length) {
+      await fetchUserList()
+      return
+    }
+    if (value.length > 2) {
+      setFilterLoading(true)
+      const token = await firebase.auth().currentUser.getIdToken(true)
+      const config = {
+        headers: {
+          authorization: `Bearer ${token}`
+        }
+      }
+      try {
+        const users = await axios.get(filterUsersUrl, config)
+        setFilterLoading(false)
+        setUserList(users)
+      } catch (err) {
+        setFilterLoading(false)
+        setError(err.message)
+      }
+    }
+  }
+
   useEffect(() => {
     if (!user) {
       const user = firebase.auth().currentUser
@@ -44,33 +73,34 @@ export default () => {
     }
   }, [user])
 
-  useEffect(() => {
-    const fetchUserList = async () => {
-      try {
-        setLoading(true)
-        const token = await firebase.auth().currentUser.getIdToken(true)
-        const config = {
-          headers: {
-            authorization: `Bearer ${token}`
-          }
+  const fetchUserList = async () => {
+    try {
+      setLoading(true)
+      const token = await firebase.auth().currentUser.getIdToken(true)
+      const config = {
+        headers: {
+          authorization: `Bearer ${token}`
         }
-        const { next, total } = pagination
-        const url = next
-          ? `${listusersUrl}?next=${next}&total=${total}`
-          : `${listusersUrl}?total=${total}`
-        const { data } = await axios.get(url, config)
-        setUserList(() => data.data)
-        setNext(data.next)
-        setLoading(false)
-      } catch (err) {
-        setError(err.message)
-        setLoading(false)
       }
+      const { next, total } = pagination
+      const url = next
+        ? `${listusersUrl}?next=${next}&total=${total}`
+        : `${listusersUrl}?total=${total}`
+      const { data } = await axios.get(url, config)
+      setUserList(() => data.data)
+      setNext(data.next)
+      setLoading(false)
+    } catch (err) {
+      setError(err.message)
+      setLoading(false)
     }
+  }
 
+  useEffect(() => {
     if (user) {
       fetchUserList()
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pagination, user])
   const goToNext = () => {
     if (next) {
@@ -96,12 +126,12 @@ export default () => {
       />
       <div className='table-top'>
         <div className='search-table'>
-          <WildSearch width='100%' />
+          <WildSearch loading={filterLoading} onChange={handleChange} value={filter} width='100%' />
         </div>
         <div className='table-pagination el'>
-          <span className='el'> {next &&  'More Available'}</span>
+          <span className='el'> {next && 'More Available'}</span>
           <span onClick={handleClick} className='el elll'>
-            {' '}
+            {' '}ss
             {pagination.total} Results
           </span>
           <Menu
