@@ -43,7 +43,7 @@ export const NavItemLink = ({ Icon, name, selected, ...rest }) => (
   </NavLink>
 )
 
-export const WildSearch = ({ loading,value, onChange, ...props }) => {
+export const WildSearch = ({ loading,value, ...props }) => {
 
   return (
     <div
