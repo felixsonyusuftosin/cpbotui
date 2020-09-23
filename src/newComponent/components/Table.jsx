@@ -63,7 +63,7 @@ export default () => {
       try {
         const { data } = await axios.get(`${filterUsersUrl}?q=${filter}`, config)
         setFilterLoading(false)
-        setUserList(data)
+        setUserList(() => data)
       } catch (err) {
         setFilterLoading(false)
         setError(err.message)
