@@ -60,9 +60,9 @@ export default () => {
         }
       }
       try {
-        const users = await axios.get(`${filterUsersUrl}?q=${filter}`, config)
+        const { data } = await axios.get(`${filterUsersUrl}?q=${filter}`, config)
         setFilterLoading(false)
-        setUserList(users)
+        setUserList(data)
       } catch (err) {
         setFilterLoading(false)
         setError(err.message)
