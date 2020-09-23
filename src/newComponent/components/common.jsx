@@ -43,7 +43,7 @@ export const NavItemLink = ({ Icon, name, selected, ...rest }) => (
   </NavLink>
 )
 
-export const WildSearch = ({ loading,value, ...props }) => {
+export const WildSearch = ({ loading,value, resetFilter, ...props }) => {
 
   return (
     <div
@@ -59,10 +59,10 @@ export const WildSearch = ({ loading,value, ...props }) => {
           <SearchIcon style={{ fontSize: '1.5rem', color: '#ccc' }} />
         )}
         {value && !loading && (
-          <CloseIcon style={{ fontSize: '1.5rem', color: '#ccc' }} />
+          <CloseIcon onClick={resetFilter} style={{ fontSize: '1.5rem', color: '#ccc' }} />
         )}
         {loading && (
-          <CircularProgress style={{ fontSize: '1.5rem' }} color='secondary' />
+          <CircularProgress style={{ fontSize: '1rem', color: '#ccc' }}  />
         )}
       </div>
     </div>

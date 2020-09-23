@@ -40,6 +40,10 @@ export default () => {
     handleClose()
   }
 
+  const resetFilter = () => {
+    setFilter('')
+  }
+
   const handleChange = async e => {
     const { value } = e.target
     setFilter(value)
@@ -56,7 +60,7 @@ export default () => {
         }
       }
       try {
-        const users = await axios.get(filterUsersUrl, config)
+        const users = await axios.get(`${filterUsersUrl}?q=${filter}`, config)
         setFilterLoading(false)
         setUserList(users)
       } catch (err) {
@@ -126,7 +130,7 @@ export default () => {
       />
       <div className='table-top'>
         <div className='search-table'>
-          <WildSearch loading={filterLoading} onChange={handleChange} value={filter} width='100%' />
+          <WildSearch resetFilter={resetFilter} loading={filterLoading} onChange={handleChange} value={filter} width='100%' />
         </div>
         <div className='table-pagination el'>
           <span className='el'> {next && 'More Available'}</span>
