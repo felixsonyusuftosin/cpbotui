@@ -51,7 +51,7 @@ export default () => {
       await fetchUserList()
       return
     }
-    if (value.length > 2 && !loading && !filterLoading) {
+    if (value.length > 2 && !loading) {
       setFilter(value)
       setFilterLoading(true)
       const token = await firebase.auth().currentUser.getIdToken(true)
